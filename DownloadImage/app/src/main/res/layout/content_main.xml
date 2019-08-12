@@ -15,11 +15,31 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/edUrl"
+            android:id="@+id/edtUrl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Url to download"
             android:inputType="textUri|textPersonName" />
+
+        <Button
+            android:id="@+id/btnDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Download" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center_horizontal"
+            tools:srcCompat="@tools:sample/avatars[4]" />
     </LinearLayout>
 </RelativeLayout>
