@@ -5,3 +5,4 @@
 # 3. How to setup display in landscape mode
 # 4. How to save and restore information when the orientation change from portrait to landscape
 # 5. How to pass data between activities
+# 6. Mastering sqlite by creating CRUD operation of computer database
