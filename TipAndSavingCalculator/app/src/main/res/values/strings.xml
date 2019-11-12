@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Tip And Saving Calculator</string>
+    <string name="enter_amount">Enter bill amount</string>
+    <string name="tip_percentage">25%</string>
+    <string name="tip_value">Tip</string>
+    <string name="total_value">Total</string>
+    <string name="tip_calculator">Tip Calculator</string>
+    <string name="saving_percent">25%</string>
+    <string name="total_money_saved">Money saved</string>
+
+</resources>

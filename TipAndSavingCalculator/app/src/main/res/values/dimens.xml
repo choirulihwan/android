@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="elevation">15dp</dimen>
+    <dimen name="billamount_padding">10dp</dimen>
+    <dimen name="seekbar_height">45dp</dimen>
+</resources>
