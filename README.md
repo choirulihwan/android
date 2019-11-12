@@ -6,3 +6,4 @@
 # 4. How to save and restore information when the orientation change from portrait to landscape
 # 5. How to pass data between activities
 # 6. Mastering sqlite by creating CRUD operation of computer database
+# 7. Sample app: Calculator to calculate tip and savings
