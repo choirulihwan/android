@@ -7,3 +7,4 @@
 # 5. How to pass data between activities
 # 6. Mastering sqlite by creating CRUD operation of computer database
 # 7. Sample app: Calculator to calculate tip and savings
+# 8. Sample app: Webview for JQuery Mobile
