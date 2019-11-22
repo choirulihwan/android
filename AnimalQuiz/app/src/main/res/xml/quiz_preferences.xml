@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:entries="@array/number_of_guesses"
+        android:entryValues="@array/number_of_guesses"
+        android:key="settings_numberofguesses"
+        android:title="@string/number_of_guesses_title"
+        android:summary="@string/number_of_guesses_description"
+        android:persistent="true"
+        android:defaultValue="4"
+        />
+
+    <MultiSelectListPreference
+        android:entries="@array/type_of_animals"
+        android:entryValues="@array/type_of_animals_values"
+        android:key="settings_animalstype"
+        android:title="@string/animal_type_title"
+        android:summary="@string/animal_type_description"
+        android:persistent="true"
+        android:defaultValue="@array/type_of_animals_values"
+    />
+
+    <ListPreference
+        android:entries="@array/colors"
+        android:entryValues="@array/colors"
+        android:key="settings_backgroundcolor"
+        android:title="@string/choose_background_color"
+        android:summary="@string/choose_background_description"
+        android:persistent="true"
+        android:defaultValue="@string/default_color_black"
+        />
+
+    <ListPreference
+        android:entries="@array/fonts"
+        android:entryValues="@array/fonts_value"
+        android:key="settings_fonts"
+        android:title="@string/choose_font"
+        android:summary="@string/choose_font_description"
+        android:persistent="true"
+        android:defaultValue="@string/default_font"
+        />
+
+</PreferenceScreen>

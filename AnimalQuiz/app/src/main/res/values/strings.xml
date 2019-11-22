@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">AnimalQuiz</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="question_text">This is animal %1$d of %2$d</string>
+    <string name="number_of_guesses_title">Number of guesses</string>
+    <string name="number_of_guesses_description">Show 2, 4, or 6 guess option</string>
+    <string name="animal_type_title">Animals</string>
+    <string name="animal_type_description">Type of animals included in the quiz</string>
+    <string name="choose_background_color">Choose background color</string>
+    <string name="choose_background_description">Choose one of these color as the background</string>
+    <string name="default_color_black">Black</string>
+    <string name="choose_font">Font for quiz</string>
+    <string name="choose_font_description">Choose one of these fonts</string>
+    <string name="default_font">Chunkfive.otf</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="result_string_value">%1$d number of guesses, and %2$.02f%% correct</string>
+    <string name="reset_animal_quiz">Restart animal quiz</string>
+    <string name="wrong_answer_message">No!</string>
+    <string name="default_animal_type">Wild_Animals</string>
+    <string name="toast_message">One type of animals must be selected. The default value is wild animal</string>
+    <string name="change_message">New changes are applied</string>
+</resources>
