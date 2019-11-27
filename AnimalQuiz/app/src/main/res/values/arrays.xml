@@ -34,4 +34,18 @@
         <item>FontleroyBrown.ttf</item>
         <item>Wonderbar Demo.otf</item>
     </string-array>
+
+    <string-array name="number_of_questions">
+        <item>5</item>
+        <item>10</item>
+    </string-array>
+
+    <string-array name="list_of_languages">
+        <item>English</item>
+        <item>Bahasa Indonesia</item>
+    </string-array>
+    <string-array name="list_of_languages_value">
+        <item>en</item>
+        <item>in</item>
+    </string-array>
 </resources>

@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -17,6 +19,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +38,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 
@@ -46,7 +50,7 @@ import java.util.Set;
  * Use the {@link MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements MyDialogFragment.MyDialogListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -59,14 +63,14 @@ public class MainFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     //added by choirul
-    private static final int NUMBER_OF_ANIMAL_IN_QUIZ = 10;
+    private static int NUMBER_OF_ANIMAL_IN_QUIZ;
 
     private List<String> allAnimalsNameList;
     private List<String> animalsNameQuizList;
     private Set<String> animalTypesInQuiz;
     private String correctAnimalAnswer;
-    private static int numberOfAllGuesses;
-    private int numberofRightAnswers, numberOfAnimalGuessRows;
+    public static int numberOfAllGuesses;
+    public static int numberofRightAnswers, numberOfAnimalGuessRows;
     private SecureRandom secureRandomNumber;
     private Handler handler;
     private Animation wrongAnswerAnimation;
@@ -109,36 +113,6 @@ public class MainFragment extends Fragment {
         }
     }
 
-    public static class MyDialogFragment extends DialogFragment{
-
-        static MyDialogFragment newInstance() {
-            MyDialogFragment f = new MyDialogFragment();
-
-            // Supply num input as an argument.
-
-            return f;
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            //super.onCreate(savedInstanceState);
-            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(getString(R.string.result_string_value, numberOfAllGuesses, (1000/(double) numberOfAllGuesses)));
-
-            builder.setPositiveButton(R.string.reset_animal_quiz, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dismiss();
-                    //MainFragment mainFragment = MainFragment.newInstance("", "");
-                    //mainFragment.resetAnimalQuiz();
-                }
-            });
-
-            return builder.create();
-        }
-
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -177,14 +151,13 @@ public class MainFragment extends Fragment {
                         if (guessValue.equals(answerValue)){
                             ++numberofRightAnswers;
                             txtAnswers.setText(answerValue + " is RIGHT");
-                            disableQuizzGuessButton();
+                            disableQuizGuessButton();
                             if (numberofRightAnswers == NUMBER_OF_ANIMAL_IN_QUIZ){
 
-                                DialogFragment animalQuizResult = MyDialogFragment.newInstance();
-                                animalQuizResult.setCancelable(false);
-                                animalQuizResult.show(getFragmentManager(), "AnimalQuizResults");
-                                //set delay here
-                                //resetAnimalQuiz();
+                                FragmentManager fm = getFragmentManager();
+                                MyDialogFragment myDialogFragment = MyDialogFragment.newInstance();
+                                myDialogFragment.setTargetFragment(MainFragment.this, 300);
+                                myDialogFragment.show(fm, "AnimalQuizResults");
 
                             } else {
                                 handler.postDelayed(new Runnable() {
@@ -208,11 +181,13 @@ public class MainFragment extends Fragment {
         return view;
     }
 
+
+
     private String getTheExactAnimalName(String animalName) {
         return animalName.substring(animalName.indexOf('-') + 1).replace('_', ' ');
     }
 
-    private void disableQuizzGuessButton(){
+    private void disableQuizGuessButton(){
         for (int row=0;row < numberOfAnimalGuessRows; row++){
             LinearLayout guessRowLinearLayout = rowsOfGuessButton[row];
             for (int buttonIndex = 0; buttonIndex < guessRowLinearLayout.getChildCount(); buttonIndex++){
@@ -355,6 +330,28 @@ public class MainFragment extends Fragment {
             rowsOfGuessButton[row].setVisibility(View.VISIBLE);
         }
 
+    }
+
+    public void modifyQuestions(SharedPreferences sharedPreferences){
+        final String NUMBER_OF_QUESTIONS = sharedPreferences.getString(MainActivity.QUESTIONS, null);
+        NUMBER_OF_ANIMAL_IN_QUIZ = Integer.parseInt(NUMBER_OF_QUESTIONS);
+    }
+
+    public void modifyLanguages(SharedPreferences sharedPreferences){
+        final String LANGUAGE_OPTIONS = sharedPreferences.getString(MainActivity.LANGUAGES, null);
+        //System.out.println(LANGUAGE_OPTIONS);
+        //switch(LANGUAGE_OPTIONS):
+        //case "en":
+         //   setNewLocale(, LocaleManager.ENGLISH);
+        /*numberOfAnimalGuessRows = Integer.parseInt(NUMBER_OF_GUESS_OPTIONS)/2;
+
+        for(LinearLayout horizontalLinearLayout : rowsOfGuessButton){
+            horizontalLinearLayout.setVisibility(View.GONE);
+        }
+
+        for(int row = 0;row < numberOfAnimalGuessRows; row++){
+            rowsOfGuessButton[row].setVisibility(View.VISIBLE);
+        }*/
     }
 
     public void modifyTypeOfAnimalsInQuiz(SharedPreferences sharedPreferences){
@@ -517,3 +514,4 @@ public class MainFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 }
+

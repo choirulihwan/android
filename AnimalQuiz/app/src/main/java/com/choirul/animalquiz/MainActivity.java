@@ -1,11 +1,15 @@
 package com.choirul.animalquiz;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.Locale;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener {
@@ -23,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
     public static final String ANIMALS_TYPE = "settings_animalstype";
     public static final String QUIZ_BACKGROUND_COLOR = "settings_backgroundcolor";
     public static final String QUIZ_FONT = "settings_fonts";
+    public static final String QUESTIONS = "settings_numberofquestions";
+    public static final String LANGUAGES = "settings_languages";
 
     private boolean isSettingChanged = false;
 
@@ -31,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
     static Typeface wonderbardemo;
 
     MainFragment myAnimalQuizFragment;
+    SettingsActivityFragment myAnimalQuizSetting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +56,19 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(settingChangeListener);
 
         myAnimalQuizFragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.animalQuizFragment);
+        //myAnimalQuizSetting = (SettingsActivityFragment) getSupportFragmentManager().findFragmentById(R.id.animalSettingFragment);
 
         myAnimalQuizFragment.modifyAnimalGuessRows(PreferenceManager.getDefaultSharedPreferences(MainActivity.this));
         myAnimalQuizFragment.modifyTypeOfAnimalsInQuiz(PreferenceManager.getDefaultSharedPreferences(MainActivity.this));
         myAnimalQuizFragment.modifyQuizFont(PreferenceManager.getDefaultSharedPreferences(MainActivity.this));
         myAnimalQuizFragment.modifyBackgroundColor(PreferenceManager.getDefaultSharedPreferences(MainActivity.this));
+        myAnimalQuizFragment.modifyQuestions(PreferenceManager.getDefaultSharedPreferences(MainActivity.this));
+        myAnimalQuizFragment.modifyLanguages(PreferenceManager.getDefaultSharedPreferences(MainActivity.this));
         myAnimalQuizFragment.resetAnimalQuiz();
         isSettingChanged = false;
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -102,6 +115,13 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
             } else if(s.equals(QUIZ_BACKGROUND_COLOR)){
                 myAnimalQuizFragment.modifyBackgroundColor(sharedPreferences);
                 myAnimalQuizFragment.resetAnimalQuiz();
+            } else if (s.equals(QUESTIONS)) {
+                myAnimalQuizFragment.modifyQuestions(sharedPreferences);
+                myAnimalQuizFragment.resetAnimalQuiz();
+            } else if (s.equals(LANGUAGES)) {
+                myAnimalQuizFragment.modifyLanguages(sharedPreferences);
+                myAnimalQuizFragment.resetAnimalQuiz();
+
             }
 
             Toast.makeText(MainActivity.this, R.string.change_message, Toast.LENGTH_SHORT).show();

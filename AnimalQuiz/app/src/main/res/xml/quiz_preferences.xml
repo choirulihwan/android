@@ -2,6 +2,16 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
+        android:entries="@array/number_of_questions"
+        android:entryValues="@array/number_of_questions"
+        android:key="settings_numberofquestions"
+        android:title="@string/number_of_questions_title"
+        android:summary="@string/number_of_questions_description"
+        android:persistent="true"
+        android:defaultValue="@string/default_number_of_questions"
+        />
+
+    <ListPreference
         android:entries="@array/number_of_guesses"
         android:entryValues="@array/number_of_guesses"
         android:key="settings_numberofguesses"
@@ -32,13 +42,23 @@
         />
 
     <ListPreference
-        android:entries="@array/fonts"
-        android:entryValues="@array/fonts_value"
-        android:key="settings_fonts"
-        android:title="@string/choose_font"
-        android:summary="@string/choose_font_description"
+    android:entries="@array/fonts"
+    android:entryValues="@array/fonts_value"
+    android:key="settings_fonts"
+    android:title="@string/choose_font"
+    android:summary="@string/choose_font_description"
+    android:persistent="true"
+    android:defaultValue="@string/default_font"
+    />
+
+    <ListPreference
+        android:entries="@array/list_of_languages"
+        android:entryValues="@array/list_of_languages_value"
+        android:key="settings_languages"
+        android:title="@string/list_of_languages_title"
+        android:summary="@string/list_of_languages_description"
         android:persistent="true"
-        android:defaultValue="@string/default_font"
+        android:defaultValue="@string/default_list_of_languages"
         />
 
 </PreferenceScreen>

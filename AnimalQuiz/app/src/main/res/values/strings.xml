@@ -22,4 +22,10 @@
     <string name="default_animal_type">Wild_Animals</string>
     <string name="toast_message">One type of animals must be selected. The default value is wild animal</string>
     <string name="change_message">New changes are applied</string>
+    <string name="number_of_questions_title">Number of questions</string>
+    <string name="number_of_questions_description">Choose the amount of questions</string>
+    <string name="default_number_of_questions">10</string>
+    <string name="list_of_languages_title">Available Languages</string>
+    <string name="list_of_languages_description">Choose the language you want</string>
+    <string name="default_list_of_languages">en</string>
 </resources>
