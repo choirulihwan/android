@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "13641689362",
+    "firebase_url": "https://boxerapp-8191a.firebaseio.com",
+    "project_id": "boxerapp-8191a",
+    "storage_bucket": "boxerapp-8191a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13641689362:android:d0dfa28fa96b280550ebcb",
+        "android_client_info": {
+          "package_name": "com.choirul.boxerapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "13641689362-s8ko2raf95n9akb2lkd07rj54fcr00ck.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.choirul.boxerapp",
+            "certificate_hash": "4a17777c92eab595894589fa1515b3afe4f11ac8"
+          }
+        },
+        {
+          "client_id": "13641689362-46tbibgogdk84nirhuh9nov4glokf2be.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWtXLItenMQB9PZ8knsFxAwJP8eAsFX6M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "13641689362-46tbibgogdk84nirhuh9nov4glokf2be.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
