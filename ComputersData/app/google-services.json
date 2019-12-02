@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "834702286683",
+    "firebase_url": "https://computersdata-87543.firebaseio.com",
+    "project_id": "computersdata-87543",
+    "storage_bucket": "computersdata-87543.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:834702286683:android:f593dbda47b4ef9b65047e",
+        "android_client_info": {
+          "package_name": "com.choirul.computersdata"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "834702286683-pt8eluihdaeck1dpirk3s5a6i0l5famp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.choirul.computersdata",
+            "certificate_hash": "4a17777c92eab595894589fa1515b3afe4f11ac8"
+          }
+        },
+        {
+          "client_id": "834702286683-57i9h6gg4so3krrjq2apngt09hd8hun3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgtceyaSdxffzZctVKcoRJWvQxr9hVPbQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "834702286683-57i9h6gg4so3krrjq2apngt09hd8hun3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
