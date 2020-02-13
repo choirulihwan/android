@@ -11,3 +11,7 @@
 # 9. Sample app: Animal quiz 
 # 10. Sample app: Boxer data with firebase
 # 11. Sample app: Computer database with firebase
+# 12. Popup Window
+
+# notes
+- if ImageView doesn't display the image, you should set "src" property values
