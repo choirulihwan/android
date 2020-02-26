@@ -1,6 +1,7 @@
 package com.choirul.martialartclubsqllite.Model;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.ContactsContract;
 
@@ -18,4 +19,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
     }
+
+    @Override
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        String createDatabaseSQL = "create table " + MARTIAL_ARTS_TABLE +
+                "(" + ID_KEY + " integer primary key autoincrement, " +
+                        NAME_KEY + " text, " + PRICE_KEY + " real," +
+                        COLOR_KEY + " text)";
+        sqLiteDatabase.execSQL(createDatabaseSQL);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        sqLiteDatabase.execSQL("drop table if exists" + MARTIAL_ARTS_TABLE);
+        onCreate(sqLiteDatabase);
+    }
+
+    public void addMartialArt(MartialArt martialArt){
+        SQLiteDatabase db = getWritableDatabase();
+        String addMartialArtSql = "insert into " + MARTIAL_ARTS_TABLE +
+                                    " values(null, '" + martialArt.getMartialArtName() + "','" +
+                                    martialArt.getMartialArtPrice() + "','" + martialArt.getMartialArtColor() +
+                                    "')";
+        db.execSQL(addMartialArtSql);
+        db.close();
+    }
+
+
 }
