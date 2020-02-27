@@ -1,9 +1,13 @@
 package com.choirul.martialartclubsqllite.Model;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.ContactsContract;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
@@ -31,7 +35,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("drop table if exists" + MARTIAL_ARTS_TABLE);
+        sqLiteDatabase.execSQL("drop table if exists " + MARTIAL_ARTS_TABLE);
         onCreate(sqLiteDatabase);
     }
 
@@ -45,5 +49,53 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deleteMartialArt(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        String deleteMartialArtSql = "delete from " + MARTIAL_ARTS_TABLE +
+                                    " where " + ID_KEY + " = " + id;
+        db.execSQL(deleteMartialArtSql);
+        db.close();
+    }
 
+    public void updateMartialArt(int id, String name, double price, String color) {
+        SQLiteDatabase db = getWritableDatabase();
+        String updateMartialArtSql = "update " + MARTIAL_ARTS_TABLE + " set " + NAME_KEY + " = '" +
+                name + "', " + PRICE_KEY + " = " + price + ", " + COLOR_KEY + " = '" + color +
+                "' WHERE " + ID_KEY + " = " + id;
+        db.execSQL(updateMartialArtSql);
+        db.close();
+    }
+
+    public ArrayList<MartialArt> getAllMartialArt() {
+        SQLiteDatabase db = getWritableDatabase();
+        String getAllMartialArtSql = "select * from " + MARTIAL_ARTS_TABLE;
+        Cursor cursor = db.rawQuery(getAllMartialArtSql, null);
+
+        ArrayList<MartialArt> martialArts = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            MartialArt current = new MartialArt(cursor.getInt(0),
+                                                cursor.getString(1),
+                                                cursor.getDouble(2),
+                                                cursor.getString(3));
+            martialArts.add(current);
+        }
+
+        db.close();
+        return martialArts;
+    }
+
+    public MartialArt getMartialArtById(int id){
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "select * from " + MARTIAL_ARTS_TABLE + " where " + ID_KEY + " = " + id;
+        Cursor cursor = db.rawQuery(sql, null);
+
+        MartialArt martialArt = null;
+        if (cursor.moveToFirst()) {
+            martialArt = new MartialArt(cursor.getInt(0), cursor.getString(1),
+                    cursor.getDouble(2), cursor.getString(3));
+        }
+
+        db.close();
+        return martialArt;
+    }
 }
