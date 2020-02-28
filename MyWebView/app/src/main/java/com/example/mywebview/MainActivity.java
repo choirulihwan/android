@@ -2,8 +2,11 @@ package com.example.mywebview;
 
 import android.Manifest;
 import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -90,7 +93,11 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebViewClient(new WebViewClient());
         //webView.loadUrl("http://192.168.10.8/jquery-mobile/GoMobile%20-%20A%20next%20generation%20web%20app%20theme.html");
         //webView.loadUrl(Uri.parse("file:///android_asset/contoh.html").toString());
-        webView.loadUrl("http://www.drugvisions.com/tbs_marketing/");
+        if(haveNetworkConnection()){
+            webView.loadUrl("http://www.drugvisions.com/tbs_marketing/");
+        } else {
+            webView.loadUrl("file:///android_asset/error.html");
+        }
         swipe.setRefreshing(true);
 
         webView.setWebViewClient(new WebViewClient(){
@@ -148,6 +155,24 @@ public class MainActivity extends AppCompatActivity {
         }else {
             finish();
         }
+    }
+
+    private boolean haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
     }
 
 
