@@ -5,12 +5,14 @@ import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.URLUtil;
@@ -18,6 +20,8 @@ import android.os.Environment;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+    WebView webView;
+    SwipeRefreshLayout swipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,23 +36,6 @@ public class MainActivity extends AppCompatActivity {
                 requestPermissions(permissions, 1);
             }
         }
-
-        WebView webView = (WebView) findViewById(R.id.webView);
-        webView.getSettings().setLoadsImagesAutomatically(true);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setDomStorageEnabled(true);
-
-        webView.getSettings().setSupportZoom(true);
-        webView.getSettings().setBuiltInZoomControls(true);
-        webView.getSettings().setDisplayZoomControls(false);
-
-        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        webView.setWebViewClient(new WebViewClient());
-        //webView.loadUrl("http://192.168.10.8/jquery-mobile/GoMobile%20-%20A%20next%20generation%20web%20app%20theme.html");
-        webView.loadUrl("http://www.drugvisions.com/tbs_marketing/");
-        //webView.loadUrl(Uri.parse("file:///android_asset/contoh.html").toString());
-        //load local file
-
 
         /* method 1*/
         /*webView.setWebViewClient(new WebViewClient(){
@@ -76,6 +63,62 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
+        swipe = (SwipeRefreshLayout) findViewById(R.id.swipe);
+        swipe.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        //webView.reload();
+                        LoadWeb();
+                    }
+                });
+
+        LoadWeb();
+    }
+
+    private void LoadWeb() {
+        webView = (WebView) findViewById(R.id.webView);
+        webView.getSettings().setLoadsImagesAutomatically(true);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setDomStorageEnabled(true);
+
+        webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDisplayZoomControls(false);
+
+        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        webView.setWebViewClient(new WebViewClient());
+        //webView.loadUrl("http://192.168.10.8/jquery-mobile/GoMobile%20-%20A%20next%20generation%20web%20app%20theme.html");
+        //webView.loadUrl(Uri.parse("file:///android_asset/contoh.html").toString());
+        webView.loadUrl("http://www.drugvisions.com/tbs_marketing/");
+        swipe.setRefreshing(true);
+
+        webView.setWebViewClient(new WebViewClient(){
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                /*if(errorCode == ERROR_BAD_URL) {
+                    webView.loadUrl("file:///android_asset/error.html");
+                }*/
+            }
+
+            public  void  onPageFinished(WebView view, String url){
+                //ketika loading selesai, ison loading akan hilang
+                swipe.setRefreshing(false);
+            }
+        });
+
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                //loading akan jalan lagi ketika masuk link lain
+                // dan akan berhenti saat loading selesai
+                if(webView.getProgress()== 100){
+                    swipe.setRefreshing(false);
+                } else {
+                    swipe.setRefreshing(true);
+                }
+            }
+        });
+
         /* method 3 */
         webView.setDownloadListener(new DownloadListener() {
             @Override
@@ -92,10 +135,21 @@ public class MainActivity extends AppCompatActivity {
                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, URLUtil.guessFileName(url, contentDisposition, mimetype));
                 DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                 dm.enqueue(request);
-                Toast.makeText(getApplicationContext(), "Downloading File", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "File Berhasil di Download", Toast.LENGTH_LONG).show();
             }
         });
     }
+
+
+    @Override
+    public void onBackPressed(){
+        if (webView.canGoBack()){
+            webView.goBack();
+        }else {
+            finish();
+        }
+    }
+
 
 
 }
