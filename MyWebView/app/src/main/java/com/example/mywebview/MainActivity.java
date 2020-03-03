@@ -1,13 +1,19 @@
 package com.example.mywebview;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
+import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,9 +28,15 @@ import android.webkit.URLUtil;
 import android.os.Environment;
 import android.widget.Toast;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 public class MainActivity extends AppCompatActivity {
     WebView webView;
     SwipeRefreshLayout swipe;
+    private long downloadID;
+    private String namaFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
+        registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
         swipe = (SwipeRefreshLayout) findViewById(R.id.swipe);
         swipe.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
@@ -101,11 +115,11 @@ public class MainActivity extends AppCompatActivity {
         swipe.setRefreshing(true);
 
         webView.setWebViewClient(new WebViewClient(){
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                /*if(errorCode == ERROR_BAD_URL) {
+            /*public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                if(errorCode == ERROR_BAD_URL) {
                     webView.loadUrl("file:///android_asset/error.html");
-                }*/
-            }
+                }
+            }*/
 
             public  void  onPageFinished(WebView view, String url){
                 //ketika loading selesai, ison loading akan hilang
@@ -141,10 +155,77 @@ public class MainActivity extends AppCompatActivity {
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, URLUtil.guessFileName(url, contentDisposition, mimetype));
                 DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-                dm.enqueue(request);
-                Toast.makeText(getApplicationContext(), "File Berhasil di Download", Toast.LENGTH_LONG).show();
+                downloadID = dm.enqueue(request);
+                Toast.makeText(getApplicationContext(), "Starting Download..", Toast.LENGTH_LONG).show();
+                setNamaFile(url);
             }
+
         });
+    }
+
+    private void setNamaFile(String url){
+                URI uri = null;
+                namaFile = "";
+                try {
+                    uri = new URI(url);
+                    String path = uri.getPath();
+                    namaFile = path.substring(path.lastIndexOf('/') + 1);
+                    namaFile = "pesanan_" + namaFile + ".pdf";
+
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+
+    }
+
+    private BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //Fetching the download id received with the broadcast
+            long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+            //Checking if the received broadcast is for our enqueued download by matching download id
+
+            //get nama file
+            if (downloadID == id) {
+                Toast.makeText(MainActivity.this, "Download Completed", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Konfirmasi sharing");
+                builder.setMessage("Apakah anda ingin melakukan sharing file" + namaFile);
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        shareFile(namaFile);
+                    }
+                });
+                builder.setNegativeButton(android.R.string.no, null);
+                builder.show();
+            }
+        }
+    };
+
+    public void shareFile(String namaFile){
+
+        File pdfFolder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            pdfFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        } else{
+            pdfFolder = Environment.getExternalStorageDirectory();
+        }
+
+        File myFile = new File(pdfFolder.getAbsolutePath() + File.separator + namaFile);
+
+        Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+        if(myFile.exists()) {
+
+            intentShareFile.setType("application/pdf");
+            //intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(myFile));
+            Uri pdfUri = FileProvider.getUriForFile(MainActivity.this, "com.example.mywebview.file.provider", myFile);
+            intentShareFile.putExtra(Intent.EXTRA_STREAM, pdfUri);
+            //intentShareFile.putExtra(Intent.EXTRA_SUBJECT,"Sharing File from Webkul...");
+            //intentShareFile.putExtra(Intent.EXTRA_TEXT, "Sharing File from Webkul to purchase items...");
+            MainActivity.this.startActivity(Intent.createChooser(intentShareFile, "Send " + namaFile));
+        }
     }
 
 
@@ -175,6 +256,9 @@ public class MainActivity extends AppCompatActivity {
         return haveConnectedWifi || haveConnectedMobile;
     }
 
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(onDownloadComplete);
+    }
 }
