@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     SwipeRefreshLayout swipe;
     private long downloadID;
     private String namaFile;
+    private File pdfFolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,12 @@ public class MainActivity extends AppCompatActivity {
                 String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
                 requestPermissions(permissions, 1);
             }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            pdfFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        } else{
+            pdfFolder = Environment.getExternalStorageDirectory();
         }
 
         /* method 1*/
@@ -144,6 +151,11 @@ public class MainActivity extends AppCompatActivity {
         webView.setDownloadListener(new DownloadListener() {
             @Override
             public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+                setNamaFile(url);
+                if (isFileExists()){
+                    deleteDownloadFile();
+                }
+
                 DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
                 request.setMimeType(mimetype);
                 String cookies = CookieManager.getInstance().getCookie(url);
@@ -157,10 +169,22 @@ public class MainActivity extends AppCompatActivity {
                 DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                 downloadID = dm.enqueue(request);
                 Toast.makeText(getApplicationContext(), "Starting Download..", Toast.LENGTH_LONG).show();
-                setNamaFile(url);
+
             }
 
         });
+    }
+
+    private boolean isFileExists(){
+
+        File myFile = new File(pdfFolder.getAbsolutePath() + File.separator + namaFile);
+        return myFile.exists();
+    }
+
+    private boolean deleteDownloadFile(){
+
+        File myFile = new File(pdfFolder.getAbsolutePath() + File.separator + namaFile);
+        return myFile.delete();
     }
 
     private void setNamaFile(String url){
@@ -190,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Download Completed", Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Konfirmasi sharing");
-                builder.setMessage("Apakah anda ingin melakukan sharing file" + namaFile);
+                builder.setMessage("Apakah anda ingin melakukan sharing file " + namaFile);
                 builder.setIcon(android.R.drawable.ic_dialog_alert);
                 builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
@@ -205,13 +229,6 @@ public class MainActivity extends AppCompatActivity {
     };
 
     public void shareFile(String namaFile){
-
-        File pdfFolder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            pdfFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        } else{
-            pdfFolder = Environment.getExternalStorageDirectory();
-        }
 
         File myFile = new File(pdfFolder.getAbsolutePath() + File.separator + namaFile);
 
