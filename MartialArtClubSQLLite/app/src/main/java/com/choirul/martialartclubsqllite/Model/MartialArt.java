@@ -49,6 +49,6 @@ public class MartialArt {
     @Override
     public String toString() {
         //return super.toString();
-        return getMartialArtName() + "\n" + getMartialArtPrice() + "\n" + getMartialArtColor();
+        return getMartialArtId() + " " + getMartialArtName() + " " + getMartialArtPrice() + " " + getMartialArtColor();
     }
 }

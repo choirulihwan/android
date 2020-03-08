@@ -48,6 +48,18 @@ public class MainActivity extends AppCompatActivity {
                 Intent addMartialArtIntent = new Intent(MainActivity.this, AddMartialArtActivity.class);
                 startActivity(addMartialArtIntent);
                 return true;
+
+            case R.id.delete_martial_art:
+                Intent deleteMartialArtIntent = new Intent(MainActivity.this, DeleteMartialArtActivity.class);
+                startActivity(deleteMartialArtIntent);
+                return true;
+
+            case R.id.update_martial_art:
+                Intent updateMartialArtIntent = new Intent(MainActivity.this, UpdateMartialArtActivity.class);
+                startActivity(updateMartialArtIntent);
+                return true;
+
+
         }
         return super.onOptionsItemSelected(item);
     }
