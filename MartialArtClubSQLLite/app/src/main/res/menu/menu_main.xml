@@ -15,4 +15,8 @@
         android:title="Update Martial Art"
         app:showAsAction="ifRoom"/>
 
+    <item android:id="@+id/reset_martial_art_price"
+        android:title="Reset Martial Art Price"
+        app:showAsAction="ifRoom"/>
+
 </menu>
