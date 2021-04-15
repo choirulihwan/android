@@ -1,4 +1,4 @@
-package com.example.mywebview;
+package com.choirul.tbs_pesanan;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -61,32 +61,6 @@ public class MainActivity extends AppCompatActivity {
             pdfFolder = Environment.getExternalStorageDirectory();
         }
 
-        /* method 1*/
-        /*webView.setWebViewClient(new WebViewClient(){
-            public boolean shouldOverrideUrlLoading(WebView view, String url){
-                //System.out.println("test " + url);
-                String search  = "export_pdf";
-                //if(url.endsWith(".pdf")){
-                if ( url.toLowerCase().indexOf(search.toLowerCase()) != -1 ) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-                    return true;
-                }
-                return false;
-            }
-        });*/
-
-        /* method 2*/
-        /*webView.setDownloadListener(new DownloadListener() {
-            public void onDownloadStart(String url, String userAgent,
-                                        String contentDisposition, String mimetype,
-                                        long contentLength) {
-                //System.out.println("test " + url);
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-            }
-        });*/
-
         registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
         swipe = (SwipeRefreshLayout) findViewById(R.id.swipe);
@@ -120,10 +94,9 @@ public class MainActivity extends AppCompatActivity {
 
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.setWebViewClient(new WebViewClient());
-        //webView.loadUrl("http://192.168.10.8/jquery-mobile/GoMobile%20-%20A%20next%20generation%20web%20app%20theme.html");
-        //webView.loadUrl(Uri.parse("file:///android_asset/contoh.html").toString());
+
         if(haveNetworkConnection()){
-            webView.loadUrl("http://www.drugvisions.com/tbs_marketing/");
+            webView.loadUrl("https://marketing.titianbangunsarana.co.id/");
         } else {
             webView.loadUrl("file:///android_asset/error.html");
         }
