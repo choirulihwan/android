@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
             intentShareFile.setType("application/pdf");
             //intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(myFile));
-            Uri pdfUri = FileProvider.getUriForFile(MainActivity.this, "com.example.mywebview.file.provider", myFile);
+            Uri pdfUri = FileProvider.getUriForFile(MainActivity.this, "com.choirul.tbs_pesanan.file.provider", myFile);
             intentShareFile.putExtra(Intent.EXTRA_STREAM, pdfUri);
             //intentShareFile.putExtra(Intent.EXTRA_SUBJECT,"Sharing File from Webkul...");
             //intentShareFile.putExtra(Intent.EXTRA_TEXT, "Sharing File from Webkul to purchase items...");
