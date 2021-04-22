@@ -22,7 +22,7 @@
         </activity>
         <provider
             android:authorities="com.choirul.tbs_pesanan.file.provider"
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
