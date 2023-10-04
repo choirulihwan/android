@@ -24,7 +24,7 @@ class CiSqliteHander extends SQLiteOpenHelper {
 
     String CREATE_TABLE = "CREATE TABLE " + TABLE_PEOPLE + "(" + COLUMN_ID + " INTEGER PRIMARY KEY, "
             + COLUMN_NAME + " TEXT, "
-            + COLUMN_NICK_NAME + " TEXT)"
+            + COLUMN_NICK_NAME + " TEXT,"
             + COLUMN_TGL_LAHIR + " DATE)"
             ;
 
